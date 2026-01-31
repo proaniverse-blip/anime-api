@@ -13,7 +13,7 @@ import {
   FILTER_SORT,
 } from "../routes/filter.maping.js";
 
-async function extractSearchResults(params = {}) {
+async function extractSearchResults(params = {}, baseUrl = v1_base_url) {
   try {
     const normalizeParam = (param, mapping) => {
       if (!param) return undefined;
@@ -78,7 +78,7 @@ async function extractSearchResults(params = {}) {
 
     const queryParams = new URLSearchParams(filteredParams).toString();
 
-    const resp = await axios.get(`https://${v1_base_url}/search?${queryParams}`, {
+    const resp = await axios.get(`https://${baseUrl}/search?${queryParams}`, {
       headers: {
         Accept:
           "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -96,13 +96,13 @@ async function extractSearchResults(params = {}) {
           ?.attr("href")
           ?.split("=")
           .pop() ??
-          $('.pre-pagination nav .pagination > .page-item a[title="Next"]')
-            ?.attr("href")
-            ?.split("=")
-            .pop() ??
-          $(".pre-pagination nav .pagination > .page-item.active a")
-            ?.text()
-            ?.trim()
+        $('.pre-pagination nav .pagination > .page-item a[title="Next"]')
+          ?.attr("href")
+          ?.split("=")
+          .pop() ??
+        $(".pre-pagination nav .pagination > .page-item.active a")
+          ?.text()
+          ?.trim()
       ) || 1;
 
     const result = [];
@@ -172,7 +172,10 @@ async function extractSearchResults(params = {}) {
       });
     });
 
-    return [parseInt(totalPage, 10), result.length > 0 ? result : []];
+    return {
+      totalPages: parseInt(totalPage, 10),
+      results: result.length > 0 ? result : []
+    };
   } catch (e) {
     console.error(e);
     return e;

@@ -2,10 +2,10 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import { v1_base_url } from "../utils/base_v1.js";
 
-export default async function extractSchedule(date) {
+export default async function extractSchedule(date, baseUrl = v1_base_url) {
   try {
     const resp = await axios.get(
-      `https://${v1_base_url}/ajax/schedule/list?tzOffset=-330&date=${date}`
+      `https://${baseUrl}/ajax/schedule/list?tzOffset=-330&date=${date}`
     );
     const $ = cheerio.load(resp.data.html);
     const results = [];

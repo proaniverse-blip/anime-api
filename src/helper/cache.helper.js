@@ -1,34 +1,32 @@
-import axios from "axios";
-import dotenv from "dotenv";
+import NodeCache from "node-cache";
 
-dotenv.config();
-
-const CACHE_SERVER_URL = process.env.CACHE_URL || null;
+// StdTTL: 1 hour (3600s), checkperiod: 2 mins (120s)
+const cache = new NodeCache({ stdTTL: 3600, checkperiod: 120 });
 
 export const getCachedData = async (key) => {
   try {
-    if (!CACHE_SERVER_URL) {
-      console.log(CACHE_SERVER_URL);
-      return;
+    const value = cache.get(key);
+    if (value) {
+      console.log(`[Cache] Hit for key: ${key}`);
+      return value;
     }
-    const response = await axios.get(`${CACHE_SERVER_URL}/${key}`);
-    return response.data;
+    return null;
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      return null;
-    }
-    throw error;
+    console.error("Error getting cache data:", error);
+    return null;
   }
 };
 
-export const setCachedData = async (key, value) => {
+export const setCachedData = async (key, value, ttl = 3600) => {
   try {
-    if (!CACHE_SERVER_URL) {
-      return;
-    }
-    await axios.post(CACHE_SERVER_URL, { key, value });
+    // console.log(`[Cache] Set for key: ${key}`);
+    cache.set(key, value, ttl);
   } catch (error) {
     console.error("Error setting cache data:", error);
-    throw error;
   }
+};
+
+// Clear cache helper
+export const clearCache = () => {
+  cache.flushAll();
 };

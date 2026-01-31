@@ -25,7 +25,7 @@ export async function decryptSources_v1(epID, id, name, type, fallback) {
           },
         },
       );
-      
+
       const $ = cheerio.load(data);
       const dataId = $("#megaplay-player").attr("data-id");
       const { data: decryptedData } = await axios.get(

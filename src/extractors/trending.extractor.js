@@ -12,9 +12,9 @@ async function fetchAnimeDetails(element) {
   return { id, data_id, number, poster, title, japanese_title };
 }
 
-async function extractTrending() {
+async function extractTrending(baseUrl = v1_base_url) {
   try {
-    const resp = await axios.get(`https://${v1_base_url}/home`);
+    const resp = await axios.get(`https://${baseUrl}/home`);
     const $ = cheerio.load(resp.data);
 
     const trendingElements = $("#anime-trending #trending-home .swiper-slide");

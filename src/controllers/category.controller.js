@@ -1,26 +1,36 @@
-import { extractor } from "../extractors/category.extractor.js";
+import ProviderFactory from "../providers/ProviderFactory.js";
 import { getCachedData, setCachedData } from "../helper/cache.helper.js";
 
 export const getCategory = async (req, res, routeType) => {
   if (routeType === "genre/martial-arts") {
     routeType = "genre/marial-arts";
   }
+
+  const providerName = req.query.provider || 'hianime';
   const requestedPage = parseInt(req.query.page) || 1;
-  // const cacheKey = `${routeType.replace(/\//g, "_")}_page_${requestedPage}`;
+  const cacheKey = `category:${providerName}:${routeType}:${requestedPage}`;
+
   try {
-    // const cachedResponse = await getCachedData(cacheKey);
-    // if (cachedResponse && Object.keys(cachedResponse).length > 0)
-    //   return cachedResponse;
-    const { data, totalPages } = await extractor(routeType, requestedPage);
-    if (requestedPage > totalPages) {
+    const cachedResponse = await getCachedData(cacheKey);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    const provider = ProviderFactory.getProvider(providerName);
+    // Note: Provider expects just the category name/type
+    const { data, totalPages } = await provider.getCategory(routeType, requestedPage);
+
+    if (requestedPage > totalPages && totalPages > 0) {
       const error = new Error("Requested page exceeds total available pages.");
       error.status = 404;
       throw error;
     }
+
     const responseData = { totalPages: totalPages, data: data };
-    // setCachedData(cacheKey, responseData).catch((err) => {
-    //   console.error("Failed to set cache:", err);
-    // });
+
+    // Cache for 3 hours (genres don't change often)
+    setCachedData(cacheKey, responseData, 10800);
+
     return responseData;
   } catch (e) {
     console.error(e);

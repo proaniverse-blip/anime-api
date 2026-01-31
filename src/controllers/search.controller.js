@@ -1,34 +1,37 @@
-import extractSearchResults from "../extractors/search.extractor.js";
+import ProviderFactory from "../providers/ProviderFactory.js";
+import { getCachedData, setCachedData } from "../helper/cache.helper.js";
 
 export const search = async (req) => {
   try {
-    let { keyword, type, status, rated, score, season, language, genres, sort, sy, sm, sd, ey, em, ed } = req.query;
-    let page = parseInt(req.query.page) || 1;
+    const providerName = req.query.provider || 'hianime';
+    const provider = ProviderFactory.getProvider(providerName);
 
-    const [totalPage, data] = await extractSearchResults({
-      keyword: keyword, 
-      type: type,
-      status: status,
-      rated: rated,
-      score: score,
-      season: season,
-      language: language,
-      genres: genres,
-      sort: sort,
-      page: page,
-      sy: sy,
-      sm: sm,
-      sd: sd,
-      ey: ey,
-      em: em,
-      ed: ed,
-    });
-    if (page > totalPage) {
-      const error = new Error("Requested page exceeds total available pages.");
-      error.status = 404;
-      throw error;
+    // Create a deterministic cache key from query params
+    const cacheKey = `search:${providerName}:${JSON.stringify(req.query)}`;
+
+    const cachedData = await getCachedData(cacheKey);
+    if (cachedData) {
+      return cachedData;
     }
-    return { data, totalPage };
+
+    // Pass the keyword string, not the entire object
+    const { keyword, page } = req.query;
+    if (!keyword) throw new Error("Keyword is required");
+
+    const data = await provider.search(keyword, page);
+
+    if (data.results.length > 0) {
+      // Cache search results for 30 minutes
+      setCachedData(cacheKey, data, 1800);
+    }
+
+    // Adapting the response to match the old format [totalPage, results]
+    // The provider returns { totalPages, results }
+    return {
+      data: data.results,
+      totalPage: data.totalPages
+    };
+
   } catch (e) {
     console.error(e);
     if (e.status === 404) {

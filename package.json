@@ -1,7 +1,7 @@
 {
-  "name": "anime-api",
+  "name": "anikai-api",
   "version": "1.0.0",
-  "description": "A restful api to provide all information about anime",
+  "description": "A high-performance Anikai-only anime API with auto-domain rotation.",
   "main": "./server.js",
   "scripts": {
     "start": "node ./server.js",
@@ -20,7 +20,12 @@
     "dotenv": "^17.2.0",
     "express": "^4.21.2",
     "image-pixels": "^2.2.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsdom": "^27.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "node-cache": "^5.1.2",
+    "puppeteer": "^24.34.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "type": "module",
   "devDependencies": {
@@ -28,6 +33,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/itzzzme/anime-api.git"
+    "url": "https://github.com/proaniverse-blip/anime-api.git"
   }
 }

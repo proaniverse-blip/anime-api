@@ -5,9 +5,9 @@ import { DEFAULT_HEADERS } from "../configs/header.config.js";
 
 const axiosInstance = axios.create({ headers: DEFAULT_HEADERS });
 
-async function extractPage(page, params) {
+async function extractPage(page, params, baseUrl = v1_base_url) {
   try {
-    const resp = await axiosInstance.get(`https://${v1_base_url}/${params}?page=${page}`);
+    const resp = await axiosInstance.get(`https://${baseUrl}/${params}?page=${page}`);
     const $ = cheerio.load(resp.data);
     const totalPages =
       Number(

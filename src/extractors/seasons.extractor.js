@@ -3,9 +3,9 @@ import * as cheerio from "cheerio";
 import formatTitle from "../helper/formatTitle.helper.js";
 import { v1_base_url } from "../utils/base_v1.js";
 
-async function extractSeasons(id) {
+async function extractSeasons(id, baseUrl = v1_base_url) {
   try {
-    const resp = await axios.get(`https://${v1_base_url}/watch/${id}`);
+    const resp = await axios.get(`https://${baseUrl}/watch/${id}`);
     const $ = cheerio.load(resp.data);
     const seasons = $(".anis-watch>.other-season>.inner>.os-list>a")
       .map((index, element) => {

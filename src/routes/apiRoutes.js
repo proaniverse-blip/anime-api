@@ -14,6 +14,7 @@ import * as randomIdController from "../controllers/randomId.controller.js";
 import * as producerController from "../controllers/producer.controller.js";
 import * as characterListController from "../controllers/voiceactor.controller.js";
 import * as nextEpisodeScheduleController from "../controllers/nextEpisodeSchedule.controller.js";
+import { getRecentEpisodes } from "../controllers/recent.controller.js";
 import { routeTypes } from "./category.route.js";
 import { getWatchlist } from "../controllers/watchlist.controller.js";
 import getVoiceActors from "../controllers/actors.controller.js";
@@ -86,4 +87,5 @@ export const createApiRoutes = (app, jsonResponse, jsonError) => {
   createRoute("/api/actors/:id", getVoiceActors);
   createRoute("/api/character/:id", getCharacter);
   createRoute("/api/top-search", getTopSearch);
+  createRoute("/api/recent", getRecentEpisodes);
 };

@@ -1,8 +1,8 @@
 import extractPage from "../helper/extractPages.helper.js";
 
-export async function extractor(path, page) {
+export async function extractor(path, page, baseUrl) {
   try {
-    const [data, totalPages] = await extractPage(page, path);
+    const [data, totalPages] = await extractPage(page, path, baseUrl);
     return { data, totalPages };
   } catch (error) {
     console.error(
