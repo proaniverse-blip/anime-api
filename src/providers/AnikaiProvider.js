@@ -151,28 +151,50 @@ class AnikaiProvider extends BaseProvider {
             info.subOrDub = hasSub && hasDub ? 'both' : (hasDub ? 'dub' : 'sub');
 
             // Enhanced Metadata Extraction
-            const infoContainer = $('.entity-scroll > .info');
+            // Enhanced Metadata Extraction
+            const detailContainer = $('.entity-scroll .detail');
+            const getInfoItem = (label) => {
+                let text = '';
+                detailContainer.find('div').each((i, el) => {
+                    const params = $(el).text().trim();
+                    if (params.startsWith(`${label}:`)) {
+                        text = params.replace(`${label}:`, '').trim();
+                        // If it has "by X reviews" (Scores), clean it?
+                        // User might want the raw text "9.29 by 1,089 reviews" or just score.
+                        // Let's keep it simple or clean it if needed.
+                    }
+                });
+                return text;
+            };
 
-            const getInfoItem = (label) => infoContainer.find(`div:contains("${label}")`).text().replace(`${label}:`, '').trim();
-
-            info.japanTitle = getInfoItem('Japanese');
-            info.synonyms = getInfoItem('Synonyms');
-            info.aired = getInfoItem('Aired');
+            info.japanTitle = $('.entity-scroll .title').attr('data-jp') || "";
+            info.synonyms = $('.al-title').text().trim();
+            info.aired = getInfoItem('Date aired');
             info.premiered = getInfoItem('Premiered');
             info.duration = getInfoItem('Duration');
             info.status = getInfoItem('Status');
-            info.malScore = getInfoItem('MAL Score');
-            info.studios = getInfoItem('Studios').split(',').map(s => s.trim()).filter(s => s);
-            info.producers = getInfoItem('Producers').split(',').map(p => p.trim()).filter(p => p);
+            info.malScore = getInfoItem('Scores');
+
+            // Lists
+            info.studios = [];
+            detailContainer.find('div:contains("Studios:") a').each((i, el) => {
+                info.studios.push($(el).text().trim());
+            });
+
+            info.producers = [];
+            detailContainer.find('div:contains("Producers:") a').each((i, el) => {
+                info.producers.push($(el).text().trim());
+            });
 
             // Genres
             info.genres = [];
-            infoContainer.find('div:contains("Genres") a').each((i, el) => {
+            // Use generic selector inside detail for Genres row
+            detailContainer.find('div:contains("Genres:") a').each((i, el) => {
                 info.genres.push($(el).text().trim());
             });
 
             // Description
-            info.description = $('.entity-scroll > .description').text().trim();
+            info.description = $('.entity-scroll .desc').text().trim();
             if (!info.description) info.description = $('.film-description').text().trim();
 
             // Fetch Episodes using AJAX and Token
