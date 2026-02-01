@@ -15,6 +15,7 @@ import * as producerController from "../controllers/producer.controller.js";
 import * as characterListController from "../controllers/voiceactor.controller.js";
 import * as nextEpisodeScheduleController from "../controllers/nextEpisodeSchedule.controller.js";
 import { getRecentEpisodes } from "../controllers/recent.controller.js";
+import { getSources } from "../controllers/sources.controller.js";
 import { routeTypes } from "./category.route.js";
 import { getWatchlist } from "../controllers/watchlist.controller.js";
 import getVoiceActors from "../controllers/actors.controller.js";
@@ -88,4 +89,5 @@ export const createApiRoutes = (app, jsonResponse, jsonError) => {
   createRoute("/api/character/:id", getCharacter);
   createRoute("/api/top-search", getTopSearch);
   createRoute("/api/recent", getRecentEpisodes);
+  createRoute("/api/anime/:animeId/episodes/:episodeId/sources", getSources);
 };
