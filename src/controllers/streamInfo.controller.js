@@ -5,20 +5,14 @@ export const getStreamInfo = async (req, res, fallback = false) => {
   try {
     const input = req.query.id;
     const server = req.query.server;
-    const type = req.query.type;
+    const type = req.query.type || req.query.category;
     const providerName = req.query.provider || 'hianime';
 
     let episodeId = input;
-    // Handle old format where id might be a URL or contain params
-    // But HiAnime provider likely expects just the ID
-    const match = input.match(/ep=(\d+)/);
-    if (match) {
-      episodeId = match[1]; // Wait, original code extracted just the number?
-      // original: const finalId = match[1]; -> extractStreamingInfo(finalId...)
-      // HiAnimeProvider.getStreamingLinks expects episodeId. 
-      // If HiAnime uses query params in ID, I should be careful.
-      // HiAnimeProvider.getStreamingLinks: const id = episodeId; ... id.split("?ep=").pop()
-    }
+
+    // We must pass the FULL input ID to the provider if it's a composite ID (Anikai/others)
+    // The previous regex extraction logic breaks tokens in the ID
+
 
     const cacheKey = `stream:${providerName}:${episodeId}:${server}:${type}`;
     const cachedData = await getCachedData(cacheKey);
