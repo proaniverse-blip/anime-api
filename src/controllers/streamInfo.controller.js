@@ -6,7 +6,14 @@ export const getStreamInfo = async (req, res, fallback = false) => {
     const input = req.query.id;
     const server = req.query.server;
     const type = req.query.type || req.query.category;
-    const providerName = req.query.provider || 'hianime';
+    let providerName = req.query.provider;
+
+    // Auto-detect provider based on ID format if not specified
+    if (!providerName && input.includes('$token=')) {
+      providerName = 'anikai';
+    } else {
+      providerName = providerName || 'hianime';
+    }
 
     let episodeId = input;
 
