@@ -6,7 +6,14 @@ export const getSources = async (req, res) => {
         const { animeId, episodeId } = req.params;
         const server = req.query.server;
         const type = req.query.type || req.query.category;
-        const providerName = req.query.provider || 'hianime';
+
+        // Auto-detect provider based on episode ID format
+        let providerName = req.query.provider;
+        if (!providerName && episodeId.includes('$token=')) {
+            providerName = 'anikai';
+        } else {
+            providerName = providerName || 'hianime';
+        }
 
         const cacheKey = `sources:${providerName}:${animeId}:${episodeId}:${server}:${type}`;
         const cachedData = await getCachedData(cacheKey);

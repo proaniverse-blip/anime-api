@@ -1,0 +1,6 @@
+{
+  "message": "Error",
+  "status": "No Response",
+  "data": null,
+  "stack": "AggregateError: Error\n    at AxiosError.from (file:///C:/Users/PCB/Desktop/frontend/anime-api/node_modules/axios/lib/core/AxiosError.js:96:14)\n    at RedirectableRequest.handleRequestError (file:///C:/Users/PCB/Desktop/frontend/anime-api/node_modules/axios/lib/adapters/http.js:638:25)\n    at RedirectableRequest.emit (node:events:519:28)\n    at eventHandlers.<computed> (C:\\Users\\PCB\\Desktop\\frontend\\anime-api\\node_modules\\follow-redirects\\index.js:49:24)\n    at ClientRequest.emit (node:events:519:28)\n    at emitErrorEvent (node:_http_client:107:11)\n    at Socket.socketErrorListener (node:_http_client:574:5)\n    at Socket.emit (node:events:519:28)\n    at emitErrorNT (node:internal/streams/destroy:170:8)\n    at emitErrorCloseNT (node:internal/streams/destroy:129:3)\n    at Axios.request (file:///C:/Users/PCB/Desktop/frontend/anime-api/node_modules/axios/lib/core/Axios.js:45:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async verifyWorkflow (file:///C:/Users/PCB/Desktop/frontend/anime-api/scripts/verify_workflow.js:23:27)"
+}

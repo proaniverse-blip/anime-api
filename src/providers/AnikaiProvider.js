@@ -313,15 +313,59 @@ class AnikaiProvider extends BaseProvider {
         }
     }
 
-    async getStreamingLinks(episodeId) {
+    async getStreamingLinks(episodeId, serverName, category) {
         try {
             // Fetch all available servers for this episode
             const servers = await this.getServers(episodeId);
 
             if (servers.length === 0) return { sources: [] };
 
-            // Resolve ALL servers (User wants 6 links if there are 6 servers)
-            const serverPromises = servers.map(async (server) => {
+            // Optimization: Filter servers if specific parameters are provided
+            const filteredServers = servers.filter(s => {
+                let match = true;
+                // Filter by Category/Type (sub, dub, softsub)
+                if (category) {
+                    // Check strict or loose match? 
+                    // Usually category is 'sub' or 'dub'. 
+                    // s.type might be 'softsub'.
+                    if (category.toLowerCase() === 'sub') {
+                        match = match && (s.type === 'sub' || s.type === 'softsub');
+                    } else if (category.toLowerCase() === 'dub') {
+                        match = match && s.type === 'dub';
+                    } else {
+                        // strict
+                        match = match && s.type.toLowerCase() === category.toLowerCase();
+                    }
+                }
+
+                // Filter by Server Name (e.g. "MegaUp Server 1")
+                // Only if serverName provided
+                if (serverName) {
+                    match = match && s.name.toLowerCase() === serverName.toLowerCase();
+                }
+
+                return match;
+            });
+
+            // If filtering results in empty, maybe fallback to all? 
+            // Or mostly likely the user wants specific thing.
+            // If filteredServers is empty but we had servers, it means requested server/cat doesn't exist.
+            // Returning empty in that case is correct for strict mode.
+
+            // However, to be safe against user typos, maybe if filtered is empty but args were passed, 
+            // we could default to returning all? No, strict is better for performance.
+            // Let's us the filtered results. 
+            // BUT: If the user didn't provide args (e.g. just ID), filteredServers == servers (match=true).
+
+            const serverListToResolve = filteredServers.length > 0 ? filteredServers :
+                (serverName || category) ? [] : servers;
+            // Logic above: 
+            // If we found matches, use them.
+            // If we didn't find matches BUT filters were active, return empty (strict).
+            // If no filters active, use strict 'servers' (which is all).
+
+            // Resolve servers
+            const serverPromises = serverListToResolve.map(async (server) => {
                 try {
                     const lid = server.data_id;
                     const verifyToken = await this.megaUp.GenerateToken(lid);

@@ -146,12 +146,46 @@ GET /api/info?id={anime_id}
 
 ---
 
-### `GET` Streaming Links
+### `GET` Episode List
 
-Get streaming links for an episode. Resolves **ALL** servers.
+Fetch the list of episodes for an anime.
 
 ```bash
-GET /api/stream?id={episode_id}
+GET /api/episodes/{anime_id}
+```
+
+**Response:**
+```json
+{
+  "totalEpisodes": 12,
+  "episodes": [
+    {
+      "id": "slug$ep=1$token=xyz", // Use this FULL string for the sources request
+      "number": 1,
+      "title": "Episode 1"
+    }
+  ]
+}
+```
+
+---
+
+### `GET` Streaming Sources
+
+Get streaming links for a specific episode. **Provider is auto-detected** from the episode ID.
+
+```bash
+GET /api/anime/{anime_id}/episodes/{episode_id}/sources?category={category}
+```
+
+**Parameters:**
+- `episode_id`: The **FULL** episode string from the Episode List (Must be URL Encoded).
+- `category`: (Optional) `sub` or `dub`. If omitted, returns ALL available sources.
+- `provider`: (Optional) Explicitly set provider. Auto-detected if ID contains `$token=` (Anikai).
+
+**Example:**
+```
+GET /api/anime/one-piece-dk6r/episodes/one-piece-dk6r%24ep%3D1%24token%3DcoDh9_Ly.../sources?category=sub
 ```
 
 **Response:**
@@ -163,12 +197,6 @@ GET /api/stream?id={episode_id}
       "type": "sub",
       "server": "MegaUp Server 1",
       "isM3U8": true
-    },
-    {
-      "url": "https://.../dub.m3u8",
-      "type": "dub",
-      "server": "MegaUp Server 1",
-      "isM3U8": true
     }
   ],
   "subtitles": [{ "url": "...", "lang": "English" }],
@@ -177,6 +205,8 @@ GET /api/stream?id={episode_id}
   "download": "https://..."
 }
 ```
+
+> **Performance Tip**: Always specify `category` (sub/dub) when possible to reduce response time and avoid timeouts on serverless platforms.
 
 ---
 
