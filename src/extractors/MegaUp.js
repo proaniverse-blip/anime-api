@@ -71,7 +71,18 @@ class MegaUp {
             const href = (typeof videoUrl === 'string') ? videoUrl : videoUrl.href;
 
             const url = href.replace('/e/', '/media/');
-            const res = await this.client.get(url); // Uses keep-alive client
+
+            // Extract domain from URL for Referer/Origin
+            const urlObj = new URL(url);
+            const baseDomain = `${urlObj.protocol}//${urlObj.host}`;
+
+            const res = await this.client.get(url, {
+                headers: {
+                    'Referer': baseDomain + '/',
+                    'Origin': baseDomain,
+                    'User-Agent': this.userAgent
+                }
+            });
             const decrypted = await this.Decode(res.data.result);
 
             const data = {
