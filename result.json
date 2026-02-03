@@ -1,0 +1,56 @@
+{
+  "status": 200,
+  "sourcesCount": 4,
+  "firstSource": {
+    "url": "https://rrr.code29wave.site/prjp/c5/h6a90f70b8d237f94866b6cfc2c7f06afdb8423c6639e9e32e274233b37bb63eead04998cb9be75c7c50ae72297d2e407621d7917319d58e04992c78e18fc5cfe4c1a/list,Ktm0Vt9-cJyXbGG_O3gV_5vGK-kpiQ.m3u8",
+    "isM3U8": true,
+    "type": "sub",
+    "server": "MegaUp Server 1"
+  },
+  "fullData": {
+    "success": true,
+    "results": {
+      "sources": [
+        {
+          "url": "https://rrr.code29wave.site/prjp/c5/h6a90f70b8d237f94866b6cfc2c7f06afdb8423c6639e9e32e274233b37bb63eead04998cb9be75c7c50ae72297d2e407621d7917319d58e04992c78e18fc5cfe4c1a/list,Ktm0Vt9-cJyXbGG_O3gV_5vGK-kpiQ.m3u8",
+          "isM3U8": true,
+          "type": "sub",
+          "server": "MegaUp Server 1"
+        },
+        {
+          "url": "https://rrr.megaup.cc/p85e/v5/bapD3C40jf5WGa2zsLH8c4MmBe5hkz4NP-Ck0ImGLNq2oBIHL_vU62dtBsDnMyKEUJx0tRGrLC_RE2MeWFL9KsQtC-tnzAYcQSxj37pvULu88wfbtV4g6X3wlLSYapPZMjlMvbPL9mKvSgnD4fk1nOANJe4Xa26X8bIJG/list.m3u8",
+          "isM3U8": true,
+          "type": "sub",
+          "server": "MegaUp Server 2"
+        },
+        {
+          "url": "https://rrr.app28base.site/pvmo/c5/h6a90f70b8d237f94866b6cfc2c6349bddedc7dc1328a9164a72e287560a572a6af47899eb0e27ac0c102a43593daaf18674336042ecb05b01196c3d60ebb5bf2/list,Ktm0Vt9-cJyXbGG_O3gV_5vGK-kpiQ.m3u8",
+          "isM3U8": true,
+          "type": "softsub",
+          "server": "MegaUp Server 1"
+        },
+        {
+          "url": "https://rrr.megaup.cc/pvmo/v5/bapD3C40jf5WGa2z8LGNJvd7cfcEyipFkpy4odWClcqavR4mesOJ6wMECpDeb1u5COFxuRm7JDfRF2JfLSfQZqghR-8D0H4YPQRX3-IzQLrNqkrGuGp4lWm9jbnkS8a4byRduf_z7/list.m3u8",
+          "isM3U8": true,
+          "type": "softsub",
+          "server": "MegaUp Server 2"
+        }
+      ],
+      "subtitles": [
+        {
+          "kind": "thumbnails",
+          "url": "https://85e.megaup.cc/v5/bapD3C40jf5SGa2zsLH8c4MmBe5hkz4NP-Ck0ImGLNq2oBIHL_vU62dtBsDnMyKEUJx0tRGrLC_RE2MeWFL9KsQtC-tnzAYcQSxj37pvULu88wfbtV4g6X3wlLSYapPZMjlMvbPL9mKvSgnD4fk1nOANJe4Xa26X8bIJG/thumbnails.vtt"
+        }
+      ],
+      "intro": [
+        178,
+        267
+      ],
+      "outro": [
+        1283,
+        1371
+      ],
+      "download": "https://megaup.cc/download/kYepIjnwWSyJcOLyEbtO7RvoDQ"
+    }
+  }
+}

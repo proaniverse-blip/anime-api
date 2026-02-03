@@ -282,17 +282,25 @@ class AnikaiProvider extends BaseProvider {
             // Consumet implementation filters by sub/dub usage via separate fetchEpisodeServers calls
             // Here we want ALL servers.
 
-            // Common selectors
-            $('.server-items .server').each((i, el) => {
+            // Common selectors - Use broader selector to ensure we don't miss anything (like Dubs outside server-items)
+            $('.server').each((i, el) => {
                 const serverEl = $(el);
                 const lid = serverEl.attr('data-lid');
+                if (!lid) return; // Skip if no data-lid
+
                 const name = serverEl.text().trim();
-                const type = serverEl.closest('.server-items').attr('data-id') || 'sub'; // 'softsub' or 'dub' usually
+
+                // Try to find type from closest container with data-id
+                const container = serverEl.closest('[data-id]');
+                let type = container.attr('data-id') || 'sub';
+
+                // Normalization
+                if (type.toLowerCase().includes('soft')) type = 'softsub';
+                else if (type.toLowerCase().includes('dub')) type = 'dub';
+                else if (type.toLowerCase().includes('sub')) type = 'sub';
 
                 servers.push({
-                    name: `MegaUp ${name}`.trim(), // Reference prefixes with MegaUp
-                    // We need to pass enough info to getStreamingLinks to work.
-                    // lid is crucial.
+                    name: `MegaUp ${name}`.trim(),
                     data_id: lid,
                     type: type
                 });

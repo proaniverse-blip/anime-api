@@ -5,7 +5,7 @@ export const getSources = async (req, res) => {
     try {
         const { animeId, episodeId } = req.params;
         const server = req.query.server;
-        const type = req.query.type;
+        const type = req.query.type || req.query.category;
         const providerName = req.query.provider || 'hianime';
 
         const cacheKey = `sources:${providerName}:${animeId}:${episodeId}:${server}:${type}`;
@@ -22,14 +22,20 @@ export const getSources = async (req, res) => {
         }
 
         // Find the episode with the matching episode number
-        const episode = animeInfo.episodes.find(ep => ep.number === parseInt(episodeId));
+        let episode = animeInfo.episodes.find(ep => ep.number === parseInt(episodeId));
 
+        // If not found by number, check if the episodeId itself matches an ID in the list
         if (!episode) {
-            return { error: `Episode ${episodeId} not found` };
+            episode = animeInfo.episodes.find(ep => ep.id === episodeId);
         }
 
+        // If still not found, and the episodeId looks like a valid ID (not just a number), use it directly
+        // This supports cases where the client sends the full ID
+        const targetEpisodeId = episode ? episode.id : episodeId;
+
+
         // Use the full episode ID (which includes the token)
-        const streamingInfo = await provider.getStreamingLinks(episode.id, server, type);
+        const streamingInfo = await provider.getStreamingLinks(targetEpisodeId, server, type);
 
         setCachedData(cacheKey, streamingInfo, 1800); // 30 mins
 
