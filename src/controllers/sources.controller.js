@@ -1,6 +1,7 @@
 import ProviderFactory from "../providers/ProviderFactory.js";
 import { getCachedData, setCachedData } from "../helper/cache.helper.js";
 
+// Last updated: 2026-02-04 - Auto-detect anikai provider
 export const getSources = async (req, res) => {
     try {
         const { animeId, episodeId } = req.params;

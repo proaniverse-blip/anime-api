@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "results": {
+    "sources": [
+      {
+        "url": "https://rrr.hub26link.site/pz78/c5/h6a90f70b8d237f94866b6cfc2c7d06afdb8423c6639e9e32e074682d37fa2ca6e806d98cb9be75c7c50ae72297d2e40f3f55791c2b9b0fe41c8cc89353a146e35d/list,Ktm0Vt9-cJyXbGG_O3gV_5vGK-kpiQ.m3u8",
+        "isM3U8": true,
+        "type": "sub",
+        "server": "MegaUp Server 1"
+      },
+      {
+        "url": "https://rrr.megaup.cc/pz78/v5/bapD3C40jf5WGa2z8LH0Gr9uEI8Zjnp4y4HRoLTf6LKboBtmMub51x8UK5yKV2uhCP11mTWzJDeJW0JvJTuYJoQVP5d7qAZgZXxD67pvQIuNikLe6H8gyXmcoeSEEsqYZzwNrIbH7nA/list.m3u8",
+        "isM3U8": true,
+        "type": "sub",
+        "server": "MegaUp Server 2"
+      },
+      {
+        "url": "https://rrr.net22lab.site/p83e/c5/h6a90f70b8d237f94866b6cfc2c6349bddedc7dc1328a916ea76b6f7572b268b0ab04899eb0e27ac0c102a43593dae1466d4339112acb0fbe1187888b14a64a/list,Ktm0Vt9-cJyXbGG_O3gV_5vGK-kpiQ.m3u8",
+        "isM3U8": true,
+        "type": "softsub",
+        "server": "MegaUp Server 1"
+      },
+      {
+        "url": "https://rrr.megaup.cc/p83e/v5/bapD3C40jf5WGa2z8LGNJvd7cfcEyipFup2tvdXKyaLCrBImesOJ6wMECpDeb1u5COFxuRm7JDfRF2JfLSfQZqghR-8D0H4YPQRX3-IzQLrNqkrGuGp4lWm8tMHMS8a4byRduf_z7/list.m3u8",
+        "isM3U8": true,
+        "type": "softsub",
+        "server": "MegaUp Server 2"
+      },
+      {
+        "url": "https://rrr.tech20hub.site/plgv/c5/h6a90f70b8d237f94866b6cfc2b6349bddedc7dc1328a9178a76a237560a520a6e10e899eb0e27ac0c102a43593dab5127e4323113d910fe21890c4d60ebb5bf2/list,Ktm0Vt9-cJyXbGG_O3gV_5vGK-kpiQ.m3u8",
+        "isM3U8": true,
+        "type": "dub",
+        "server": "MegaUp Server 1"
+      },
+      {
+        "url": "https://rrr.megaup.cc/plgv/v5/bapD3C40jf5WGa2z8K2NJvd7cfcEyipF4p2ojdWClIKbhDomesOJ6wMECpDeb1u5COFxuRm7JDfRF2JfLSfQZqghR-8D0H4YPQRX3-IzQLrNqkrGuGp4lWm95ZGAS8a4byRduf_z7/list.m3u8",
+        "isM3U8": true,
+        "type": "dub",
+        "server": "MegaUp Server 2"
+      }
+    ],
+    "subtitles": [
+      {
+        "kind": "thumbnails",
+        "url": "https://z78.megaup.cc/v5/bapD3C40jf5SGa2z8LH0Gr9uEI8Zjnp4y4HRoLTf6LKboBtmMub51x8UK5yKV2uhCP11mTWzJDeJW0JvJTuYJoQVP5d7qAZgZXxD67pvQIuNikLe6H8gyXmcoeSEEsqYZzwNrIbH7nA/thumbnails.vtt"
+      }
+    ],
+    "intro": [
+      0,
+      124
+    ],
+    "outro": [
+      1390,
+      1500
+    ],
+    "download": "https://megaup.cc/download/0MjhZzuwWSyJcOLyEbtP7hbqDQ"
+  }
+}
