@@ -273,7 +273,12 @@ class AnikaiProvider extends BaseProvider {
 
             const url = `${this.baseUrl}/ajax/links/list?token=${token}&_=${verifyToken}`;
 
-            const { data } = await this.client.get(url, { headers: this.getHeaders() });
+            const { data } = await this.client.get(url, {
+                headers: {
+                    ...this.getHeaders(),
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
 
             const $ = cheerio.load(data.result);
             const servers = [];
@@ -370,7 +375,12 @@ class AnikaiProvider extends BaseProvider {
                     const lid = server.data_id;
                     const verifyToken = await this.megaUp.GenerateToken(lid);
                     const viewUrl = `${this.baseUrl}/ajax/links/view?id=${lid}&_=${verifyToken}`;
-                    const { data } = await this.client.get(viewUrl, { headers: this.getHeaders() });
+                    const { data } = await this.client.get(viewUrl, {
+                        headers: {
+                            ...this.getHeaders(),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
                     const decodedIframeData = await this.megaUp.DecodeIframeData(data.result);
                     const sources = await this.megaUp.extract(decodedIframeData.url);
 
