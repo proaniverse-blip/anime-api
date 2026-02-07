@@ -20,7 +20,7 @@
     "dotenv": "^17.2.0",
     "express": "^4.21.2",
     "image-pixels": "^2.2.2",
-    "jsdom": "^27.4.0",
+    "jsdom": "^28.0.0",
     "jsonwebtoken": "^9.0.2",
     "node-cache": "^5.1.2",
     "puppeteer": "^24.34.0",
