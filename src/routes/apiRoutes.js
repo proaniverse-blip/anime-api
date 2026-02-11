@@ -89,5 +89,6 @@ export const createApiRoutes = (app, jsonResponse, jsonError) => {
   createRoute("/api/character/:id", getCharacter);
   createRoute("/api/top-search", getTopSearch);
   createRoute("/api/recent", getRecentEpisodes);
+  createRoute("/api/latest-update", getRecentEpisodes);
   createRoute("/api/anime/:animeId/episodes/:episodeId/sources", getSources);
 };

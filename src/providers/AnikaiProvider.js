@@ -577,7 +577,8 @@ class AnikaiProvider extends BaseProvider {
 
     async getRecentEpisodes(page = 1) {
         try {
-            const { data } = await this.client.get(`/recent?page=${page}`);
+            // User requested "new episodes released list", which corresponds to /updates on Anikai
+            const { data } = await this.client.get(`/updates?page=${page}`);
             const $ = cheerio.load(data);
             const results = [];
 
@@ -601,16 +602,18 @@ class AnikaiProvider extends BaseProvider {
             });
 
             // Pagination check
-            const hasNextPage = $('.pagination .next').length > 0;
+            // Based on HTML of /updates: <a class="page-link" href="..." rel="next" ...>
+            const hasNextPage = $('.pagination a[rel="next"]').length > 0;
 
             return {
                 currentPage: page,
                 hasNextPage,
-                results
+                results,
+                latestEpisode: results // Alias for user request preference
             };
         } catch (err) {
             console.error('[Anikai] getRecentEpisodes error:', err.message);
-            return { currentPage: page, hasNextPage: false, results: [] };
+            return { currentPage: page, hasNextPage: false, results: [], latestEpisode: [] };
         }
     }
 
