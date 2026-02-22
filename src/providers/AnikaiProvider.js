@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../utils/axiosWrapper.js';
 import * as cheerio from "cheerio";
 import BaseProvider from "./BaseProvider.js";
 import MegaUp from "../extractors/MegaUp.js";

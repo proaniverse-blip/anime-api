@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../utils/axiosWrapper.js';
 import * as cheerio from "cheerio";
 import { v2_base_url } from "../utils/base_v2.js";
 

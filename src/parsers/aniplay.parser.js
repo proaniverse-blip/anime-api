@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../utils/axiosWrapper.js';
 import { v3_base_url } from "../utils/base_v3.js";
 
 const DEFAULT_BASE_URL = `https://${v3_base_url}`;

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../utils/axiosWrapper.js';
 import https from 'https';
 
 class MegaUp {

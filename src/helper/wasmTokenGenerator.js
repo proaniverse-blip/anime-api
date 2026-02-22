@@ -2,7 +2,7 @@
 import util from "util";
 import pixels from "image-pixels";
 import cryptoJs from "crypto-js";
-import axios from "axios";
+import axios from '../utils/axiosWrapper.js';
 // import { webcrypto } from "crypto";
 // const crypto = webcrypto;
 // Node 18+ has global crypto

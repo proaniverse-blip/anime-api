@@ -1,7 +1,7 @@
 // this is kept as backup in case megacloud's architecture rollback to it's previous architecture
 
 
-// import axios from "axios";
+// import axios from '../../utils/axiosWrapper.js';
 // import CryptoJS from "crypto-js";
 // import { v2_base_url } from "../../utils/base_v2.js";
 // import fetchScript from "../../helper/fetchScript.helper.js";
