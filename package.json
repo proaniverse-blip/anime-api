@@ -22,7 +22,7 @@
     "got-scraping": "^4.2.0",
     "https-proxy-agent": "^7.0.6",
     "image-pixels": "^2.2.2",
-    "jsdom": "^27.4.0",
+    "jsdom": "^28.1.0",
     "jsonwebtoken": "^9.0.2",
     "node-cache": "^5.1.2",
     "puppeteer": "^24.34.0",
