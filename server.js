@@ -6,8 +6,11 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { createApiRoutes } from "./src/routes/apiRoutes.js";
+import { setupAxios } from "./src/utils/axiosSetup.js";
 
 dotenv.config();
+
+setupAxios();
 
 const app = express();
 const PORT = process.env.PORT || 4444;
