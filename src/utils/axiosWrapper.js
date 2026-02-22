@@ -101,30 +101,95 @@ const mapGotResponseToAxios = (gotResponse, responseType) => {
     return axiosLikeResponse;
 };
 
-// Main wrapper interface mimicking Axios
-const axiosWrapper = async (urlOrConfig, config = {}) => {
-    let url = typeof urlOrConfig === 'string' ? urlOrConfig : urlOrConfig.url;
-    let options = typeof urlOrConfig === 'string' ? config : urlOrConfig;
+// Interceptor manager mock
+class InterceptorManager {
+    constructor() {
+        this.handlers = [];
+    }
+    use(fulfilled, rejected) {
+        this.handlers.push({ fulfilled, rejected });
+        return this.handlers.length - 1;
+    }
+    eject(id) {
+        if (this.handlers[id]) {
+            this.handlers[id] = null;
+        }
+    }
+}
 
-    const gotOptions = convertAxiosToGot(url, options);
-    const response = await gotScraping(gotOptions);
-    return mapGotResponseToAxios(response, options.responseType);
+// Factory to create Axios-like instances
+const createInstance = (instanceConfig = {}) => {
+    const instance = async (urlOrConfig, config = {}) => {
+        let url = typeof urlOrConfig === 'string' ? urlOrConfig : urlOrConfig.url;
+        let options = typeof urlOrConfig === 'string' ? config : urlOrConfig;
+
+        // Merge defaults
+        const finalOptions = { ...instance.defaults, ...options };
+        if (instance.defaults.baseURL && !url.startsWith('http')) {
+            // Very basic baseURL resolution
+            url = `${instance.defaults.baseURL.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
+        }
+
+        let gotOptions = convertAxiosToGot(url, finalOptions);
+
+        // Execute request interceptors
+        for (const handler of instance.interceptors.request.handlers) {
+            if (handler) {
+                try {
+                    gotOptions = await handler.fulfilled(gotOptions) || gotOptions;
+                } catch (e) {
+                    if (handler.rejected) await handler.rejected(e);
+                    throw e;
+                }
+            }
+        }
+
+        try {
+            const response = await gotScraping(gotOptions);
+            let axiosResponse = mapGotResponseToAxios(response, finalOptions.responseType);
+
+            // Execute response interceptors
+            for (const handler of instance.interceptors.response.handlers) {
+                if (handler) {
+                    axiosResponse = await handler.fulfilled(axiosResponse) || axiosResponse;
+                }
+            }
+            return axiosResponse;
+        } catch (error) {
+            // Execute response error interceptors
+            for (const handler of instance.interceptors.response.handlers) {
+                if (handler && handler.rejected) {
+                    return await handler.rejected(error);
+                }
+            }
+            throw error;
+        }
+    };
+
+    instance.defaults = { headers: { common: {} }, ...instanceConfig };
+    instance.interceptors = {
+        request: new InterceptorManager(),
+        response: new InterceptorManager()
+    };
+
+    instance.get = async (url, config = {}) => instance(url, { ...config, method: 'GET' });
+    instance.post = async (url, data, config = {}) => instance(url, { ...config, method: 'POST', data });
+    instance.put = async (url, data, config = {}) => instance(url, { ...config, method: 'PUT', data });
+    instance.delete = async (url, config = {}) => instance(url, { ...config, method: 'DELETE' });
+    instance.patch = async (url, data, config = {}) => instance(url, { ...config, method: 'PATCH', data });
+
+    // Support axios(config) syntax directly
+    instance.request = instance;
+
+    return instance;
 };
 
-// Expose standard Axios methods
-axiosWrapper.get = async (url, config = {}) => axiosWrapper(url, { ...config, method: 'GET' });
-axiosWrapper.post = async (url, data, config = {}) => axiosWrapper(url, { ...config, method: 'POST', data });
-axiosWrapper.put = async (url, data, config = {}) => axiosWrapper(url, { ...config, method: 'PUT', data });
-axiosWrapper.delete = async (url, config = {}) => axiosWrapper(url, { ...config, method: 'DELETE' });
-axiosWrapper.patch = async (url, data, config = {}) => axiosWrapper(url, { ...config, method: 'PATCH', data });
+// Create the default global instance
+const axiosWrapper = createInstance();
 
-// To maintain interceptor signatures so code using it doesn't break
-axiosWrapper.interceptors = {
-    request: { use: () => { } },
-    response: { use: () => { } }
-};
-axiosWrapper.defaults = {
-    headers: { common: {} }
+// Add the create method to the global instance
+axiosWrapper.create = (instanceConfig) => {
+    return createInstance(instanceConfig);
 };
 
 export default axiosWrapper;
